@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "ES6",                       // JavaScript version to compile down to
+    "module": "commonjs",                  // Module system (common for Node.js)
+    "strict": true,                        // Enables strict type-checking
+    "esModuleInterop": true,               // Helps with compatibility between CommonJS and ES modules
+    "skipLibCheck": true,                  // Skips type checking of declaration files
+    "forceConsistentCasingInFileNames": true,
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "types": ["node"],
+    "resolveJsonModule": true
+  },
+  "include": ["src"],                      // Folders to include in compilation
+  "exclude": ["node_modules"]              // Folders to exclude
+}

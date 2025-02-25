@@ -1,0 +1,36 @@
+{
+  "name": "tb-create-next-app",
+  "version": "0.1.0",
+  "description": "Custom cli tool to create a nextjs app",
+  "scripts": {
+    "build": "tsc",
+    "dev": "ts-node ./src/index.ts",
+    "prod": "node ./dist/index.js"
+  },
+  "keywords": [
+    "react",
+    "nextjs",
+    "cli"
+  ],
+  "bin": {
+    "tb-create-next-app": "/dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "author": "Romuald Oluwatobi <romualdnoualinon@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^22.13.4",
+    "@types/validate-npm-package-name": "^4.0.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.3"
+  },
+  "dependencies": {
+    "@inquirer/prompts": "^7.3.2",
+    "commander": "^13.1.0",
+    "fast-glob": "^3.3.3",
+    "picocolors": "^1.1.1",
+    "validate-npm-package-name": "^6.0.0"
+  }
+}
