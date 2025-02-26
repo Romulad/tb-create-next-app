@@ -1,31 +1,54 @@
 import { Command } from "commander";
 import { input } from "@inquirer/prompts";
+import { exec, execSync } from "node:child_process";
 import { mkdirSync, accessSync, copyFileSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
-import { red, green, cyan, italic } from "picocolors";
+import { red, green,magenta, cyan, cyanBright, italic, bold } from "picocolors";
 import { W_OK } from "node:constants";
 import { globSync } from "fast-glob";
+import Conf from "conf";
 
 import packageJson from "../package.json";
 import { isValidProjectName } from "./lib/validate-project-name";
-import { TEMPLATE_NAMES, TEMPLATES_DIRECTORY_NAME } from "./lib/constants";
+import { TEMPLATE_NAMES, TEMPLATES_DIRECTORY_NAME, USER_INPUT_DATA } from "./lib/constants";
 import { exitCli } from "./lib/functions";
-import { exec, execSync } from "node:child_process";
+import { isValidGitRepoUrl } from "./lib/validate-git-url";
 
 
+console.log(bold(
+  cyan(
+  `This utility will walk you through creating a NextJs app using app router.`
+  )
+));
+console.log();
 
 let projectName: string;
 
-const tbCreateAppCommand = new Command(packageJson.name)
+const program = new Command(packageJson.name)
   .description(packageJson.description)
   .version(
     packageJson.version, 
     "-v, --version", 
     "Output the current version of tb-create-next-app."
   )
-  .argument("[projectName]", "The project name")
-  .option("--skip-git", "Specify this option to avoid git initialiazion")
-  .option("--skip-install", "Avoid package installation")
+  .argument(
+    "[projectName]", "The project name"
+  )
+  .option(
+    "--app-version <version>", "Specify the app version"
+  )
+  .option(
+    "--app-description <description>", "Description for the project"
+  )
+  .option(
+    "--git-repo <git-repo-url>", "Git repository url for the project"
+  )
+  .option(
+    "--skip-git", "Specify this option to avoid git initialiazion"
+  )
+  .option(
+    "--skip-install", "Avoid package installation"
+  )
   .action((name)=>{
     projectName = name;
   })
@@ -33,12 +56,15 @@ const tbCreateAppCommand = new Command(packageJson.name)
   .parse(process.argv);
 
 
-const opts = tbCreateAppCommand.opts();
+const opts = program.opts();
 
 async function appCreationFlow(){
+  const config = new Conf({projectName: "tb-create-next-app"});
+
+  // project name
   if(!projectName){
     projectName = await input({
-      message: "What is your project name",
+      message: `What is your ${cyanBright("project name")}:`,
       required: true,
       validate: (projectName) => {
         const result = isValidProjectName(projectName);
@@ -48,100 +74,51 @@ async function appCreationFlow(){
   }else{
     const result = isValidProjectName(projectName);
     if(typeof result !== "boolean"){
-      console.error(red(`Project name: ${result[0]}`));
+      console.error(red(`Project ${result[0]}`));
       exitCli();
     }
   }
+  USER_INPUT_DATA.projectName = projectName.trim();
 
-  const projectPath = resolve(projectName);
-  const projectDirPath = dirname(projectPath);
-  const templatePath = join(
-    __dirname, TEMPLATES_DIRECTORY_NAME, TEMPLATE_NAMES.appDefault
-  );
 
-  try{
-    accessSync(projectDirPath, W_OK);
-  }catch(error){
-    console.error(
-      red('The application path is not writable, please check folder permissions and try again.')
-    )
-    console.error(
-      red('It is likely you do not have write permissions for this folder.')
-    )
-    exitCli();
+  // project description
+  let appDescription: string = opts.appDescription;
+  if(!appDescription){
+    appDescription = await input({
+      message: `Project description: `,
+    })
   }
-  
-  mkdirSync(projectPath, { recursive: true });
-  process.chdir(projectPath);
+  USER_INPUT_DATA.appDescription = appDescription;
 
-  const matcheFilePaths = globSync("**", {
-    cwd: templatePath,
-    dot: true,
-    absolute: false
-  })
 
-  matcheFilePaths.forEach((filePath)=>{
-    const sourceFileDirectory = dirname(filePath);
-    const sourceFilePath = join(templatePath, filePath);
-
-    mkdirSync(sourceFileDirectory, { recursive: true });
-
-    try{
-      copyFileSync(sourceFilePath, filePath);
-    }catch{
-      console.log(`error for file ${cyan(filePath)}`);
-    }
-  })
-
-  // Create flow to ask user to enter project detail like with npm init
-  // Check and find out what package version to use for dependencies and devdepencies
-  const packageJsonFile = {
-    "name": packageJson.name,
-    "version": "0.1.0",
-    "description": "",
-    "main": "./index.ts",
-    "scripts": {
-      "dev": "next dev --turbopack",
-      "build": "next build",
-      "start": "next start",
-      "lint": "next lint"
-    },
-    devDependencies: {
-      "@eslint/eslintrc": "^3",
-      "@types/node": "^20",
-      "@types/react": "^19",
-      "@types/react-dom": "^19",
-      "eslint": "^9",
-      "eslint-config-next": "15.1.6",
-      "typescript": "^5"
-    },
-    dependencies: {
-      "next": "15.1.6",
-      "next-auth": "^4.24.11",
-      "react": "^19.0.0",
-      "react-dom": "^19.0.0",
-    }
+  // project version
+  let appVersion: string = opts.appVersion || config.get('app_version');
+  if(!appVersion){
+    appVersion = await input({
+      message: `Version:`,
+      default: "0.1.0",
+    })
   }
+  USER_INPUT_DATA.appVersion = appVersion;
+  config.set("app_version", appVersion);
 
-  writeFileSync('package.json', JSON.stringify(packageJsonFile, null, 2));
 
-  if(!opts.skipInstall){
-    console.log(
-      italic(cyan("Installing package"))
-    )
-    execSync("npm install") // user should be able to choose package manager
+  // Git repo url
+  let repoUrl: string = opts.gitRepo;
+  if(!repoUrl){
+    repoUrl = await input({
+      message: `Git ${cyan("repository url")}: `,
+      validate: (value) => {
+        if(!value){
+          return true;
+        }
+        const isValid = isValidGitRepoUrl(value);
+        return isValid.valid ? true : isValid.message;
+      },
+    })
   }
+  USER_INPUT_DATA.gitRepoUrl = repoUrl;
 
-  if(!opts.skipGit){
-    // Check if git exist before initialization
-    console.log(
-      italic(cyan("Initializing git"))
-    )
-    execSync('git init')
-    execSync('git add .; git commit -m "Initiale commit from Tobi create next app"')
-  }
-  
-  console.log(`nextjs project named ${cyan(projectName)} created successfully`)
 }
 
 appCreationFlow()
