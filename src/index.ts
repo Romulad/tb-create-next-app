@@ -1,18 +1,14 @@
 import { Command } from "commander";
-import { input } from "@inquirer/prompts";
-import { exec, execSync } from "node:child_process";
-import { mkdirSync, accessSync, copyFileSync, writeFileSync } from "node:fs";
-import { dirname, join, resolve } from "node:path";
-import { red, green,magenta, cyan, cyanBright, italic, bold } from "picocolors";
-import { W_OK } from "node:constants";
-import { globSync } from "fast-glob";
+import { input, } from "@inquirer/prompts";
+import { red, cyan, bold } from "picocolors";
 import Conf from "conf";
 
 import packageJson from "../package.json";
 import { isValidProjectName } from "./lib/validate-project-name";
-import { TEMPLATE_NAMES, TEMPLATES_DIRECTORY_NAME, USER_INPUT_DATA } from "./lib/constants";
+import { USER_INPUT_DATA } from "./lib/constants";
 import { exitCli } from "./lib/functions";
 import { isValidGitRepoUrl } from "./lib/validate-git-url";
+import handleAppCreation from "./handle-app-creation";
 
 
 console.log(bold(
@@ -61,10 +57,10 @@ const opts = program.opts();
 async function appCreationFlow(){
   const config = new Conf({projectName: "tb-create-next-app"});
 
-  // project name
+  /* project name */
   if(!projectName){
     projectName = await input({
-      message: `What is your ${cyanBright("project name")}:`,
+      message: `What is your project ${cyan("name")}:`,
       required: true,
       validate: (projectName) => {
         const result = isValidProjectName(projectName);
@@ -80,30 +76,27 @@ async function appCreationFlow(){
   }
   USER_INPUT_DATA.projectName = projectName.trim();
 
-
-  // project description
+  /* project description */
   let appDescription: string = opts.appDescription;
   if(!appDescription){
     appDescription = await input({
-      message: `Project description: `,
+      message: `Project ${cyan("description")}:`,
     })
   }
   USER_INPUT_DATA.appDescription = appDescription;
 
-
-  // project version
+  /* project version */
   let appVersion: string = opts.appVersion || config.get('app_version');
   if(!appVersion){
     appVersion = await input({
-      message: `Version:`,
+      message: `Project ${cyan("version")}:`,
       default: "0.1.0",
     })
   }
   USER_INPUT_DATA.appVersion = appVersion;
   config.set("app_version", appVersion);
 
-
-  // Git repo url
+  /* Git repo url */
   let repoUrl: string = opts.gitRepo;
   if(!repoUrl){
     repoUrl = await input({
@@ -119,6 +112,7 @@ async function appCreationFlow(){
   }
   USER_INPUT_DATA.gitRepoUrl = repoUrl;
 
+  await handleAppCreation(USER_INPUT_DATA);
 }
 
 appCreationFlow()

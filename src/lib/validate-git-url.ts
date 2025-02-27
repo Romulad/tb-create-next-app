@@ -1,5 +1,6 @@
 import { execSync } from "child_process";
 import { isOnline } from "./functions";
+import isGitInstalled from "./git-is-installed";
 
 type isValidGitRepoUrlReturnTye = 
  | {
@@ -22,6 +23,10 @@ export const isValidGitRepoUrl = (
     new URL(url);
   }catch{
     return {valid: false, message: "Invalid repository url"};
+  }
+
+  if(!isGitInstalled()){
+    return {valid: false, message: "Git command can't be found"}; 
   }
 
   try{
