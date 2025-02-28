@@ -5,7 +5,7 @@ import Conf from "conf";
 
 import packageJson from "../package.json";
 import { isValidProjectName } from "./lib/validate-project-name";
-import { USER_INPUT_DATA } from "./lib/constants";
+import { userInputData } from "./lib/constants";
 import { exitCli } from "./lib/functions";
 import { isValidGitRepoUrl } from "./lib/validate-git-url";
 import handleAppCreation from "./handle-app-creation";
@@ -74,7 +74,7 @@ async function appCreationFlow(){
       exitCli();
     }
   }
-  USER_INPUT_DATA.projectName = projectName.trim();
+  userInputData.projectName = projectName.trim();
 
   /* project description */
   let appDescription: string = opts.appDescription;
@@ -83,7 +83,7 @@ async function appCreationFlow(){
       message: `Project ${cyan("description")}:`,
     })
   }
-  USER_INPUT_DATA.appDescription = appDescription;
+  userInputData.appDescription = appDescription;
 
   /* project version */
   let appVersion: string = opts.appVersion || config.get('app_version');
@@ -93,7 +93,7 @@ async function appCreationFlow(){
       default: "0.1.0",
     })
   }
-  USER_INPUT_DATA.appVersion = appVersion;
+  userInputData.appVersion = appVersion;
   config.set("app_version", appVersion);
 
   /* Git repo url */
@@ -110,9 +110,9 @@ async function appCreationFlow(){
       },
     })
   }
-  USER_INPUT_DATA.gitRepoUrl = repoUrl;
+  userInputData.gitRepoUrl = repoUrl;
 
-  await handleAppCreation(USER_INPUT_DATA);
+  await handleAppCreation(userInputData);
 }
 
 appCreationFlow()

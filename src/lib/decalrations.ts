@@ -1,5 +1,5 @@
 
-export type UserInputData = {
+export interface UserInputData {
   projectName: string;
   appVersion: string;
   appDescription: string;

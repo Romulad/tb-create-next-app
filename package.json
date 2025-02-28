@@ -5,7 +5,7 @@
   "scripts": {
     "preview": "node ./dist/index.js",
     "dev": "ncc build ./src/index.ts -w -o ./dist",
-    "build": "ncc build ./src/index.ts -o ./dist --minify --no-cache --no-source-map-register",
+    "build": "rm -r ./dist; ncc build ./src/index.ts -o ./dist --minify --no-cache --no-source-map-register",
     "release": "npm publish"
   },
   "keywords": [

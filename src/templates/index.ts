@@ -1,94 +1,115 @@
+import { globSync } from "fast-glob";
+import { basename, dirname, join } from "path";
+import { copyFileSync, mkdirSync, writeFileSync } from "fs";
+import { execSync } from "child_process";
+import { red, cyan } from "picocolors";
+
 import { UserInputData } from "../lib/decalrations";
+import { defaultPackageJson } from "../lib/constants";
+import isGitInstalled from "../lib/git-is-installed";
+
+
+
+interface CreateAppFromTemplate extends UserInputData {
+  templatePath: string;
+  projectPath: string;
+}
 
 export default function createAppFromTemplate(
-  data: UserInputData, 
+  {
+    projectPath,
+    templatePath,
+    projectName,
+    appDescription,
+    appVersion,
+    skipGit,
+    skipInstall,
+    gitRepoUrl
+  } : CreateAppFromTemplate, 
 ){
-  // const projectPath = resolve(projectName);
-  // const projectDirPath = dirname(projectPath);
-  // const templatePath = join(
-  //   __dirname, TEMPLATES_DIRECTORY_NAME, TEMPLATE_NAMES.appDefault
-  // );
 
-  // try{
-  //   accessSync(projectDirPath, W_OK);
-  // }catch(error){
-  //   console.error(
-  //     red('The application path is not writable, please check folder permissions and try again.')
-  //   )
-  //   console.error(
-  //     red('It is likely you do not have write permissions for this folder.')
-  //   )
-  //   exitCli();
-  // }
+  process.chdir(projectPath);
+
+  const matchedFilePaths = globSync("**", {
+    cwd: templatePath,
+    dot: true,
+    absolute: false
+  });
+
+  matchedFilePaths.forEach((filePath)=>{
+    const sourceFileDirectory = dirname(filePath);
+    const sourceFilePath = join(templatePath, filePath);
+    const fileName = basename(filePath);
+
+    if(fileName === "env.local"){
+      filePath = join(sourceFileDirectory, ".env.local");
+    }else if(fileName === "_next-env.d.ts"){
+      filePath = join(sourceFileDirectory, "next-env.d.ts");
+    }
+
+    /* make sure the directory already exist in the project dir */
+    mkdirSync(
+      sourceFileDirectory, { recursive: true }
+    );
+
+    try{
+      copyFileSync(sourceFilePath, filePath);
+    }catch{
+      console.log(`error while copying ${filePath}`);
+    }
+  })
+
+  /* Create package.json file */
+  defaultPackageJson.name = projectName;
+  defaultPackageJson.description = appDescription;
+  defaultPackageJson.version = appVersion;
+
+  if(gitRepoUrl){
+    defaultPackageJson.repository.url = gitRepoUrl;
+  }else{
+    delete (defaultPackageJson as any).repository;
+  }
+
+  writeFileSync(
+    'package.json', JSON.stringify(defaultPackageJson, null, 2)
+  );
+
+  console.log();
+
+  /* Install packages */
+  if(!skipInstall){
+    console.log(cyan("Installing packages..."));
+
+    try{
+      execSync("npm install", { stdio: "inherit" });  // user should be able to choose package manager and I should check existence before used
+    }catch{
+      console.log(red('Error while installing packages'));
+    }
+  }
+
+  console.log();
+
+  /* Initialize git */
+  const gitIsInstalled = isGitInstalled();
+  if(!skipGit && gitIsInstalled){
+    console.log(cyan("Initializing git..."));
+
+    try{
+      execSync(
+        `git init; git add .; git commit -m "Initiale commit from Tobi create next app`,
+        { stdio: "inherit" }
+      )
+      if(gitRepoUrl){
+        execSync(`git remote add origin ${gitRepoUrl}`, { stdio: "ignore" });
+      }
+    }catch{
+      console.log(red('Error while initializing git'))
+    }
+  }else if(!gitIsInstalled){
+    console.log(red(
+      "Tried to initialize git, but it can't be found, please install it."
+    ))
+  }
   
-  // mkdirSync(projectPath, { recursive: true });
-  // process.chdir(projectPath);
-
-  // const matcheFilePaths = globSync("**", {
-  //   cwd: templatePath,
-  //   dot: true,
-  //   absolute: false
-  // })
-
-  // matcheFilePaths.forEach((filePath)=>{
-  //   const sourceFileDirectory = dirname(filePath);
-  //   const sourceFilePath = join(templatePath, filePath);
-
-  //   mkdirSync(sourceFileDirectory, { recursive: true });
-
-  //   try{
-  //     copyFileSync(sourceFilePath, filePath);
-  //   }catch{
-  //     console.log(`error for file ${cyan(filePath)}`);
-  //   }
-  // })
-
-  // // Create flow to ask user to enter project detail like with npm init
-  // // Check and find out what package version to use for dependencies and devdepencies
-  // const packageJsonFile = {
-  //   "name": projectName,
-  //   "version": appVersion,
-  //   "description": appDescription,
-  //   "scripts": {
-  //     "dev": "next dev --turbopack",
-  //     "build": "next build",
-  //     "start": "next start",
-  //     "lint": "next lint"
-  //   },
-  //   devDependencies: {
-  //     "@eslint/eslintrc": "^3",
-  //     "@types/node": "^20",
-  //     "@types/react": "^19",
-  //     "@types/react-dom": "^19",
-  //     "eslint": "^9",
-  //     "eslint-config-next": "15.1.6",
-  //     "typescript": "^5"
-  //   },
-  //   dependencies: {
-  //     "next": "15.1.6",
-  //     "next-auth": "^4.24.11",
-  //     "react": "^19.0.0",
-  //     "react-dom": "^19.0.0",
-  //   }
-  // }
-
-  // writeFileSync('package.json', JSON.stringify(packageJsonFile, null, 2));
-
-  // if(!opts.skipInstall){
-  //   console.log(
-  //     italic(cyan("Installing package"))
-  //   )
-  //   execSync("npm install") // user should be able to choose package manager
-  // }
-
-  // if(!opts.skipGit){
-  //   // Check if git exist before initialization
-  //   console.log(
-  //     italic(cyan("Initializing git"))
-  //   )
-  //   execSync('git init')
-  //   execSync('git add .; git commit -m "Initiale commit from Tobi create next app"')
-  // }
-  
-  // console.log(`nextjs project named ${cyan(projectName)} created successfully`)
+  console.log(`Nextjs project named ${cyan(projectName)} created successfully!`);
 }
