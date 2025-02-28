@@ -96,7 +96,7 @@ export default function createAppFromTemplate(
 
     try{
       execSync(
-        `git init; git add .; git commit -m "Initiale commit from Tobi create next app`,
+        `git init; git add .; git commit -m "Initiale commit from Tobi create next app"`,
         { stdio: "inherit" }
       )
       if(gitRepoUrl){
