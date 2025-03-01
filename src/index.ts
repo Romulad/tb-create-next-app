@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import { Command } from "commander";
 import { input, } from "@inquirer/prompts";
 import { red, cyan, bold } from "picocolors";
@@ -13,7 +14,7 @@ import handleAppCreation from "./handle-app-creation";
 
 console.log(bold(
   cyan(
-  `This utility will walk you through creating a NextJs app using app router.`
+    `This utility will walk you through creating a NextJs app using app router.`
   )
 ));
 console.log();

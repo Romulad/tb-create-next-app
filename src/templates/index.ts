@@ -9,7 +9,6 @@ import { defaultPackageJson } from "../lib/constants";
 import isGitInstalled from "../lib/git-is-installed";
 
 
-
 interface CreateAppFromTemplate extends UserInputData {
   templatePath: string;
   projectPath: string;
@@ -30,10 +29,10 @@ export default function createAppFromTemplate(
 
   process.chdir(projectPath);
 
-  const matchedFilePaths = globSync("**", {
+  const matchedFilePaths = globSync(["**"], {
     cwd: templatePath,
     dot: true,
-    absolute: false
+    absolute: false,
   });
 
   matchedFilePaths.forEach((filePath)=>{
@@ -43,8 +42,15 @@ export default function createAppFromTemplate(
 
     if(fileName === "env.local"){
       filePath = join(sourceFileDirectory, ".env.local");
-    }else if(fileName === "_next-env.d.ts"){
+    }
+    else if(fileName === "_next-env.d.ts"){
       filePath = join(sourceFileDirectory, "next-env.d.ts");
+    }
+    else if(fileName === "_README.md"){
+      filePath = join(sourceFileDirectory, "README.md");
+    }
+    else if(fileName === "gitignore"){
+      filePath = join(sourceFileDirectory, ".gitignore");
     }
 
     /* make sure the directory already exist in the project dir */
