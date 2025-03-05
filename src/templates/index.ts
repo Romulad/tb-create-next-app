@@ -5,8 +5,9 @@ import { execSync } from "child_process";
 import { red, cyan } from "picocolors";
 
 import { UserInputData } from "../lib/decalrations";
-import { defaultPackageJson } from "../lib/constants";
+import { defaultPackageJson, userAppConfig, userAppConfigKeys } from "../lib/constants";
 import isGitInstalled from "../lib/git-is-installed";
+import { execCmdWithError } from "../lib/functions";
 
 
 interface CreateAppFromTemplate extends UserInputData {
@@ -23,7 +24,8 @@ export default function createAppFromTemplate(
     appVersion,
     skipGit,
     skipInstall,
-    gitRepoUrl
+    gitRepoUrl,
+    pckManager
   } : CreateAppFromTemplate, 
 ){
 
@@ -86,10 +88,19 @@ export default function createAppFromTemplate(
   if(!skipInstall){
     console.log(cyan("Installing packages..."));
 
-    try{
-      execSync("npm install", { stdio: "inherit" });  // user should be able to choose package manager and I should check existence before used
-    }catch{
-      console.log(red('Error while installing packages'));
+    /* Check if the package manager is installed */
+    if(execCmdWithError(
+      `${pckManager} --version`, 
+      `${pckManager} is not installed`,
+      "ignore",
+    )){
+      const installed = execCmdWithError(
+        `${pckManager} install`, 
+        `Error while installing packages`,
+        "inherit",
+      )
+      installed 
+      && userAppConfig.set(userAppConfigKeys.pckManager, pckManager)
     }
   }
 
@@ -100,16 +111,18 @@ export default function createAppFromTemplate(
   if(!skipGit && gitIsInstalled){
     console.log(cyan("Initializing git..."));
 
-    try{
-      execSync(
-        `git init; git add .; git commit -m "Initiale commit from Tobi create next app"`,
-        { stdio: "inherit" }
+    execCmdWithError(
+      `git init; git add .; git commit -m "Initiale commit from Tobi create next app"`, 
+      `Error while initializing git`,
+      "inherit",
+    )
+
+    if(gitRepoUrl){
+      execCmdWithError(
+        `git remote add origin ${gitRepoUrl}`, 
+        `Error while adding git remote origin`,
+        "ignore",
       )
-      if(gitRepoUrl){
-        execSync(`git remote add origin ${gitRepoUrl}`, { stdio: "ignore" });
-      }
-    }catch{
-      console.log(red('Error while initializing git'))
     }
   }else if(!gitIsInstalled){
     console.log(red(
@@ -117,5 +130,6 @@ export default function createAppFromTemplate(
     ))
   }
   
+  console.log();
   console.log(`Nextjs project named ${cyan(projectName)} created successfully!`);
 }

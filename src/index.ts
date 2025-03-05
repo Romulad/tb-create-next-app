@@ -1,23 +1,14 @@
 #!/usr/bin/env node
 import { Command } from "commander";
-import { input, } from "@inquirer/prompts";
-import { red, cyan, bold } from "picocolors";
-import Conf from "conf";
+import { input, select, } from "@inquirer/prompts";
+import { red, cyan, yellow, bold } from "picocolors";
 
 import packageJson from "../package.json";
 import { isValidProjectName } from "./lib/validate-project-name";
-import { userInputData } from "./lib/constants";
-import { exitCli } from "./lib/functions";
+import { userAppConfig, userAppConfigKeys, userInputData } from "./lib/constants";
+import { exitCli, isValidPckManager } from "./lib/functions";
 import { isValidGitRepoUrl } from "./lib/validate-git-url";
 import handleAppCreation from "./handle-app-creation";
-
-
-console.log(bold(
-  cyan(
-    `This utility will walk you through creating a NextJs app using app router.`
-  )
-));
-console.log();
 
 let projectName: string;
 
@@ -46,6 +37,9 @@ const program = new Command(packageJson.name)
   .option(
     "--skip-install", "Avoid package installation"
   )
+  .option(
+    "--pck-manager <package-manager>", "Package manager to use; can be npm, yarn, pnpm or any valid package manager"
+  )
   .action((name)=>{
     projectName = name;
   })
@@ -56,7 +50,23 @@ const program = new Command(packageJson.name)
 const opts = program.opts();
 
 async function appCreationFlow(){
-  const config = new Conf({projectName: "tb-create-next-app"});
+  console.log();
+  console.log(bold(
+    cyan(
+      `This utility will walk you through creating a NextJs app using app router.`
+    )
+  ));
+  console.log();
+  
+  /* pck manager validation if specified */
+  const specifiedPckManager = opts.pckManager;
+  if(specifiedPckManager && !isValidPckManager(specifiedPckManager)
+  ){
+    console.log(yellow(
+      `You’ve selected a different package manager than npm, yarn or pnpm: ${cyan(specifiedPckManager)}`
+    ));
+    console.log();
+  }
 
   /* project name */
   if(!projectName){
@@ -87,7 +97,7 @@ async function appCreationFlow(){
   userInputData.appDescription = appDescription;
 
   /* project version */
-  let appVersion: string = opts.appVersion || config.get('app_version');
+  let appVersion: string = opts.appVersion || userAppConfig.get('app_version');
   if(!appVersion){
     appVersion = await input({
       message: `Project ${cyan("version")}:`,
@@ -95,7 +105,7 @@ async function appCreationFlow(){
     })
   }
   userInputData.appVersion = appVersion;
-  config.set("app_version", appVersion);
+  userAppConfig.set(userAppConfigKeys.appVersion, appVersion);
 
   /* Git repo url */
   let repoUrl: string = opts.gitRepo;
@@ -112,6 +122,30 @@ async function appCreationFlow(){
     })
   }
   userInputData.gitRepoUrl = repoUrl;
+
+  /* Package manager */
+  let pckManager: string = specifiedPckManager || userAppConfig.get('pck_manager');
+  if(!pckManager){
+    pckManager = await select({
+      message: `Which package do you want to use? ${cyan("select a choice")}:`,
+      choices: [
+        {
+          value: "npm",
+          description: "A widely used package manager for JavaScript"
+        },
+        {
+          value: "yarn",
+          description: "Fast and reliable package manager for JavaScript"
+        },
+        {
+          value: "pnpm",
+          description: "Fast, disk space efficient package manager"
+        },
+      ]
+    });
+  }
+  userInputData.pckManager = pckManager;
+
 
   await handleAppCreation(userInputData);
 }

@@ -13,7 +13,8 @@ export default async function handleAppCreation({
     appDescription,
     gitRepoUrl,
     skipGit,
-    skipInstall
+    skipInstall,
+    pckManager
   } : UserInputData
 ) {
   const projectPath = await createProjectDir(projectName);
@@ -34,6 +35,7 @@ export default async function handleAppCreation({
     projectPath,
     skipGit, 
     skipInstall,
-    templatePath
+    templatePath,
+    pckManager
   })
 }

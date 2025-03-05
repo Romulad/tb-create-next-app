@@ -1,4 +1,13 @@
+import Conf from "conf";
 import { UserInputData } from "./decalrations";
+
+
+export const userAppConfig = new Conf({projectName: "tb-create-next-app"});
+
+export const userAppConfigKeys = {
+  appVersion: "app_version",
+  pckManager: "pck_manager"
+}
 
 export const TEMPLATES_DIRECTORY_NAME = "templates";
 
@@ -12,7 +21,8 @@ export const userInputData: UserInputData = {
   appVersion: "0.1.0",
   gitRepoUrl: "",
   skipGit: false,
-  skipInstall: false
+  skipInstall: false,
+  pckManager: "npm",
 };
 
 export const defaultPackageJson = {

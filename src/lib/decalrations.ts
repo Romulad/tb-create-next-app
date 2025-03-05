@@ -6,4 +6,5 @@ export interface UserInputData {
   gitRepoUrl: string;
   skipGit: boolean;
   skipInstall: boolean;
+  pckManager: string;
 }
