@@ -3,8 +3,9 @@
   "version": "1.1.0",
   "description": "Custom cli tool to create a nextjs app",
   "scripts": {
-    "preview": "node ./dist/index.js",
+    "test": "jest",
     "dev": "rm -r ./dist; ncc build ./src/index.ts -w -o ./dist",
+    "preview": "node ./dist/index.js",
     "build": "rm -r ./dist; ncc build ./src/index.ts -o ./dist --minify --no-cache --no-source-map-register",
     "release": "npm publish"
   },
@@ -25,6 +26,7 @@
     "@types/node": "^22.13.4",
     "@types/validate-npm-package-name": "^4.0.2",
     "@vercel/ncc": "^0.38.3",
+    "jest": "^29.7.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.7.3"
   },

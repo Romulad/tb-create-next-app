@@ -10,6 +10,16 @@ import { exitCli, isValidPckManager } from "./lib/functions";
 import { isValidGitRepoUrl } from "./lib/validate-git-url";
 import handleAppCreation from "./handle-app-creation";
 
+
+process.on('uncaughtException', (error) => {
+  if (error instanceof Error && error.name === 'ExitPromptError') {
+    console.log();
+    console.log(`Aborted...! ${cyan("See you next time 👋")}`);
+  } else {
+    throw error;
+  }
+});
+
 let projectName: string;
 
 const program = new Command(packageJson.name)
@@ -60,7 +70,9 @@ async function appCreationFlow(){
   
   /* pck manager validation if specified */
   const specifiedPckManager = opts.pckManager;
-  if(specifiedPckManager && !isValidPckManager(specifiedPckManager)
+  if(
+    specifiedPckManager && 
+    !isValidPckManager(specifiedPckManager)
   ){
     console.log(yellow(
       `You’ve selected a different package manager than npm, yarn or pnpm: ${cyan(specifiedPckManager)}`
@@ -97,7 +109,7 @@ async function appCreationFlow(){
   userInputData.appDescription = appDescription;
 
   /* project version */
-  let appVersion: string = opts.appVersion || userAppConfig.get('app_version');
+  let appVersion: string = opts.appVersion || userAppConfig.get(userAppConfigKeys.appVersion);
   if(!appVersion){
     appVersion = await input({
       message: `Project ${cyan("version")}:`,
@@ -124,7 +136,8 @@ async function appCreationFlow(){
   userInputData.gitRepoUrl = repoUrl;
 
   /* Package manager */
-  let pckManager: string = specifiedPckManager || userAppConfig.get('pck_manager');
+  let pckManager: string = specifiedPckManager 
+    || userAppConfig.get(userAppConfigKeys.pckManager);
   if(!pckManager){
     pckManager = await select({
       message: `Which package do you want to use? ${cyan("select a choice")}:`,

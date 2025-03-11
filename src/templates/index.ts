@@ -1,7 +1,6 @@
 import { globSync } from "fast-glob";
 import { basename, dirname, join } from "path";
 import { copyFileSync, mkdirSync, writeFileSync } from "fs";
-import { execSync } from "child_process";
 import { red, cyan } from "picocolors";
 
 import { UserInputData } from "../lib/decalrations";
