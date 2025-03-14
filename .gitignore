@@ -1,3 +1,5 @@
 node_modules
 dist
 flow.txt
+test-flow.txt
+coverage

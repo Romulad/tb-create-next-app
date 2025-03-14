@@ -1,9 +1,11 @@
 {
   "name": "tb-create-next-app",
   "version": "1.1.0",
-  "description": "Custom cli tool to create a nextjs app",
+  "description": "Custom cli tool to create a Nextjs app with Ts and App Router",
   "scripts": {
     "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
     "dev": "rm -r ./dist; ncc build ./src/index.ts -w -o ./dist",
     "preview": "node ./dist/index.js",
     "build": "rm -r ./dist; ncc build ./src/index.ts -o ./dist --minify --no-cache --no-source-map-register",
@@ -23,9 +25,15 @@
   "author": "Romuald Oluwatobi <romualdnoualinon@gmail.com>",
   "license": "MIT",
   "devDependencies": {
+    "@babel/core": "^7.26.10",
+    "@babel/preset-env": "^7.26.9",
+    "@babel/preset-typescript": "^7.26.0",
+    "@types/jest": "^29.5.14",
     "@types/node": "^22.13.4",
     "@types/validate-npm-package-name": "^4.0.2",
     "@vercel/ncc": "^0.38.3",
+    "babel-jest": "^29.7.0",
+    "cli-testing-library": "^3.0.1",
     "jest": "^29.7.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.7.3"

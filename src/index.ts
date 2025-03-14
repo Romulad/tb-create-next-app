@@ -42,13 +42,13 @@ const program = new Command(packageJson.name)
     "--git-repo <git-repo-url>", "Git repository url for the project"
   )
   .option(
-    "--skip-git", "Specify this option to avoid git initialiazion"
-  )
-  .option(
-    "--skip-install", "Avoid package installation"
-  )
-  .option(
     "--pck-manager <package-manager>", "Package manager to use; can be npm, yarn, pnpm or any valid package manager"
+  )
+  .option(
+    "--skip-git", "Specify this option to avoid git initialization"
+  )
+  .option(
+    "--skip-install", "Skip package installation"
   )
   .action((name)=>{
     projectName = name;
