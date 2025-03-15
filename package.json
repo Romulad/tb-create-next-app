@@ -3,9 +3,8 @@
   "version": "1.1.0",
   "description": "Custom cli tool to create a Nextjs app with Ts and App Router",
   "scripts": {
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage",
+    "test:dev": "NODE_OPTIONS=\"$NODE_OPTIONS --experimental-vm-modules\" jest --watch",
+    "test": "NODE_OPTIONS=\"$NODE_OPTIONS --experimental-vm-modules\" jest",
     "dev": "rm -r ./dist; ncc build ./src/index.ts -w -o ./dist",
     "preview": "node ./dist/index.js",
     "build": "rm -r ./dist; ncc build ./src/index.ts -o ./dist --minify --no-cache --no-source-map-register",

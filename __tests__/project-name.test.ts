@@ -1,10 +1,9 @@
-import { renderCli } from "./lib"
+import { renderCli } from "./lib/utils";
 
 
 describe('Project name', () => {
-  test("Ask for project name when it's not specified", async () => {
-    const { getStdallStr } = await renderCli();
-
-    console.log(getStdallStr())
-  })
-})
+    test("Ask for project name when it's not specified", async () => {
+        const { getStdallStr } = await renderCli();
+        console.log(getStdallStr());
+    });
+});
