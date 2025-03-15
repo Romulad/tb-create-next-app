@@ -4,7 +4,7 @@ import { TEMPLATE_NAMES, TEMPLATES_DIRECTORY_NAME } from "./lib/constants";
 import createProjectDir from "./lib/create-project-dir";
 import { UserInputData } from "./lib/decalrations";
 import { exitCli } from "./lib/functions";
-import createAppFromTemplate from "./templates";
+import createAppFromTemplate from "./create-from-template";
 
 
 export default async function handleAppCreation({

@@ -3,10 +3,10 @@ import { basename, dirname, join } from "path";
 import { copyFileSync, mkdirSync, writeFileSync } from "fs";
 import { red, cyan } from "picocolors";
 
-import { UserInputData } from "../lib/decalrations";
-import { defaultPackageJson, userAppConfig, userAppConfigKeys } from "../lib/constants";
-import isGitInstalled from "../lib/git-is-installed";
-import { execCmdWithError } from "../lib/functions";
+import { UserInputData } from "./lib/decalrations";
+import { defaultPackageJson, userAppConfig, userAppConfigKeys } from "./lib/constants";
+import isGitInstalled from "./lib/git-is-installed";
+import { execCmdWithError } from "./lib/functions";
 
 
 interface CreateAppFromTemplate extends UserInputData {
