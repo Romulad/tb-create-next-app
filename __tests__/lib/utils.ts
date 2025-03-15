@@ -11,7 +11,7 @@ export const waitFor = (timeout) => {
   });
 }
 
-export const renderCli = async (args=[]) => {
+export const renderCli = async (args=[""]) => {
   const cliPath = resolve("dist", "index.js");
   const renderResult = await render("node", [cliPath, ...args]);
 
