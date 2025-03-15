@@ -8,6 +8,8 @@
     "forceConsistentCasingInFileNames": true,
     "types": ["node", "jest"],
     "resolveJsonModule": true,
+    "outDir": "ts-build",
   },
+  "include": ["src/"],
   "exclude": ["node_modules", "dist", "./src/templates"]
 }
