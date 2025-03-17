@@ -15,10 +15,10 @@ export default async function createProjectDir(
   /* Check if the parent dir is writable */
   if(!isDirWritable(projectDirPath)){
     console.error(
-      red('The application path is not writable, please check folder permissions and try again.')
+      red('\nThe application path is not writable, please check folder permissions and try again.')
     )
     console.error(
-      red('It is likely you do not have write permissions for this folder.')
+      red('It is likely you do not have write permissions for this folder.\n')
     )
     exitCli();
   }
@@ -28,8 +28,7 @@ export default async function createProjectDir(
     return projectPath;
   }
 
-  console.log()
-  console.log(yellow("The project directory already exist..."))
+  console.log(yellow("\nThe project directory already exist..."))
 
   /* Since the project dir exist, check if it is writable too */
   if(!isDirWritable(projectPath)){
@@ -48,8 +47,7 @@ export default async function createProjectDir(
     return projectPath;
   }
 
-  console.log(yellow('But it is not empty.'));
-  console.log();
+  console.log(yellow('But it is not empty.\n'));
   
   const choice = await select({
     message: `How would you like to proceed ? ${cyan("select a choice")}:`,

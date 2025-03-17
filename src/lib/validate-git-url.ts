@@ -2,22 +2,15 @@ import { execSync } from "child_process";
 import { isOnline } from "./functions";
 import isGitInstalled from "./git-is-installed";
 
-type isValidGitRepoUrlReturnTye = 
- | {
-  valid: true,
-}
-| {
-  valid: false,
-  message: string
+type isValidGitRepoUrlReturnTye = {
+  valid: boolean,
+  message?: string,
+  isDeconnected?: boolean
 }
 
-export const isValidGitRepoUrl = (
+export const isValidGitRepoUrl = async (
   url: string
-) : isValidGitRepoUrlReturnTye => {  
-
-  if(!isOnline){
-    return { valid: false, message: "Please check your connectivity"};
-  }
+) : Promise<isValidGitRepoUrlReturnTye> => {  
 
   try{
     new URL(url);
@@ -27,6 +20,13 @@ export const isValidGitRepoUrl = (
 
   if(!isGitInstalled()){
     return {valid: false, message: "Git command can't be found"}; 
+  }
+
+  if(!(await isOnline())){
+    return { 
+      valid: false, 
+      isDeconnected: true,
+      message: "You need to be connected to be able to add a git repository url"};
   }
 
   try{
