@@ -1,3 +1,4 @@
+import { describe, test, expect } from "vitest";
 import { renderCli } from "./lib/utils";
 
 describe('App package manager', ()=>{

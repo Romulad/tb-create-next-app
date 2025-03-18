@@ -1,9 +1,8 @@
-const { execSync } = require('child_process');
-const { existsSync } = require('fs');
-const { resolve } = require('path');
+import { execSync } from "child_process";
+import { existsSync } from "fs";
+import { resolve } from "path";
 
-
-async function setUpt() {
+export default async function () {
   const buildPath = resolve('dist');
 
   if(existsSync(buildPath)) return;
@@ -14,6 +13,8 @@ async function setUpt() {
   }catch{
     console.error('Error while building the project...');
   }
-}
 
-module.exports = setUpt;
+  return async () => {
+
+  }
+}

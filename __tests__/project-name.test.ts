@@ -1,3 +1,4 @@
+import { describe, test, expect } from "vitest";
 import { renderCli, waitFor } from "./lib/utils";
 
 

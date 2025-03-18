@@ -176,4 +176,4 @@ async function appCreationFlow(){
   await handleAppCreation(userInputData);
 }
 
-appCreationFlow()
+appCreationFlow();

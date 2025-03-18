@@ -1,6 +1,13 @@
+import { describe, test, expect, vi } from "vitest";
 import { renderCli, waitFor } from "./lib/utils";
+import { execSync } from "child_process";
+import { isOnline } from "../src/lib/functions"
 
 // TODO: test case for git not installed and git ls-remote mock with failure and success cases
+
+vi.mock("child_process");
+vi.mock("../src/lib/functions");
+
 
 describe('Project git repo url', () => {
   test("Ask for git repo url", async () => {
@@ -31,6 +38,8 @@ describe('Project git repo url', () => {
   });
 
   test("Ask for git repo url: Valid Url but not connected", async () => {
+    //@ts-ignore
+    isOnline.mockResolvedValue(false);
     const { findByText, userEvent } = await renderCli([
       'testproject', "--app-description \"my project\"", "--app-version \"1.0.0\""
     ]);
