@@ -6,6 +6,6 @@ export default defineConfig({
     environment: 'node',
     globalSetup: "./__tests__/lib/setup.ts",
     testTimeout: 20000,
-    clearMocks: true,
+    mockReset: true,
   },
 });

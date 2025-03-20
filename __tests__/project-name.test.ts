@@ -12,6 +12,7 @@ describe('Project name', () => {
         const { userEvent, findByText } = await renderCli();
         await userEvent.keyboard("test project name");
         await userEvent.keyboard("[Enter]");
+        await waitFor(1000);
         await findByText("name can only contain URL-friendly characters");
     });
     
@@ -19,6 +20,7 @@ describe('Project name', () => {
         const { userEvent, findByText } = await renderCli();
         await userEvent.keyboard("testProject");
         await userEvent.keyboard("[Enter]");
+        await waitFor(1000);
         expect(await findByText('name can no longer contain capital letters')).toBeTruthy();
     });
 

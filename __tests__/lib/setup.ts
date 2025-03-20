@@ -14,7 +14,5 @@ export default async function () {
     console.error('Error while building the project...');
   }
 
-  return async () => {
-
-  }
+  return async () => {};
 }

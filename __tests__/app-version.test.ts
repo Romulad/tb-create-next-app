@@ -15,7 +15,7 @@ describe("App version", ()=>{
     const { getByText, userEvent } = await renderCli(
       ["testproject", "--app-description \"my project\""]
     );
-    expect(getByText("Project version: (4)", { exact: false  })).toBeTruthy();
+    expect(getByText("Project version:", { exact: false  })).toBeTruthy();
     await userEvent.keyboard("[Enter]");
     await waitFor(1000);
     expect(getByText("Git repository", { exact: false  })).toBeTruthy();

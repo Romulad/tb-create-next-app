@@ -17,7 +17,7 @@ describe('App package manager', ()=>{
   });
 
   test('Pck manager with warning msg', async ()=>{
-    const { findByText, userEvent } = await renderCli([
+    const { findByText } = await renderCli([
       'testproject', "--pck-manager \"burn\""
     ]);
     expect(await findByText(`You’ve selected a different package manager than npm, yarn or pnpm`)).toBeTruthy();
