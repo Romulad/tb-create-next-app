@@ -1,6 +1,6 @@
 {
   "name": "tb-create-next-app",
-  "version": "1.1.0",
+  "version": "1.1.1-0",
   "description": "Custom cli tool to create a Nextjs app with Ts and App Router",
   "scripts": {
     "dev": "shx rm -rf ./dist; ncc build ./src/index.ts -w -o ./dist",
