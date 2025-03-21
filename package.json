@@ -3,11 +3,12 @@
   "version": "1.1.0",
   "description": "Custom cli tool to create a Nextjs app with Ts and App Router",
   "scripts": {
-    "dev": "rm -rf ./dist; ncc build ./src/index.ts -w -o ./dist",
+    "dev": "shx rm -rf ./dist; ncc build ./src/index.ts -w -o ./dist",
     "test:dev": "vitest dev",
     "test": "vitest run",
-    "preview": "rm -rf ./dist; ncc build ./src/index.ts -o ./dist; node ./dist/index.js",
-    "build": "rm -rf ./dist; ncc build ./src/index.ts -o ./dist --minify --no-cache --no-source-map-register",
+    "preview": "shx rm -rf ./dist; ncc build ./src/index.ts -o ./dist && node ./dist/index.js",
+    "build": "shx rm -rf ./dist; ncc build ./src/index.ts -o ./dist --minify --no-cache --no-source-map-register",
+    "prerelease": "shx rm -rf ./dist/src && shx cp -r ./src/templates ./dist",
     "release": "npm publish"
   },
   "keywords": [
@@ -35,6 +36,7 @@
     "conf": "^13.1.0",
     "fast-glob": "^3.3.3",
     "picocolors": "^1.1.1",
+    "shx": "^0.4.0",
     "typescript": "^5.7.3",
     "validate-npm-package-name": "^6.0.0",
     "vitest": "^3.0.9"
