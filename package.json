@@ -9,7 +9,8 @@
     "preview": "shx rm -rf ./dist; ncc build ./src/index.ts -o ./dist && node ./dist/index.js",
     "build": "shx rm -rf ./dist; ncc build ./src/index.ts -o ./dist --minify --no-cache --no-source-map-register",
     "prerelease": "shx rm -rf ./dist/src && shx mkdir -p ./dist/src && shx cp -r ./src/templates ./dist/src",
-    "release": "npm publish"
+    "release": "npm publish",
+    "publish": "npm run build && npm run prerelease && npm run release"
   },
   "keywords": [
     "react",
@@ -30,7 +31,6 @@
     "@types/node": "^22.13.4",
     "@types/validate-npm-package-name": "^4.0.2",
     "@vercel/ncc": "^0.38.3",
-    "@vitest/coverage-v8": "^3.0.9",
     "cli-testing-library": "^3.0.1",
     "commander": "^13.1.0",
     "conf": "^13.1.0",
