@@ -169,11 +169,20 @@ async function appCreationFlow(){
           description: "Fast, disk space efficient package manager"
         },
       ],
+      default: userAppConfig.get(userAppConfigKeys.pckManager) || "npm"
     });
   }
   userInputData.pckManager = pckManager;
-
-  await handleAppCreation(userInputData);
+  
+  await handleAppCreation({
+    appDescription: userInputData.appDescription,
+    appVersion: userInputData.appVersion,
+    gitRepoUrl: userInputData.gitRepoUrl,
+    pckManager: userInputData.pckManager,
+    projectName: userInputData.projectName,
+    skipGit: opts.skipGit,
+    skipInstall: opts.skipInstall
+  });
 }
 
 appCreationFlow();
