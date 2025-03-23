@@ -47,6 +47,7 @@ args.forEach((cmd, index) => {
       break;
     case "format":
       runNpmScripts("prettier", "Error while formatting with prettier.");
+      execSync("git add .");
       break;
     case "coMsg":
       validateCommitMsg(args[index + 1]);
