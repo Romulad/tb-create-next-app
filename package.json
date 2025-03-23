@@ -11,7 +11,8 @@
     "build": "shx rm -rf ./dist; ncc build ./src/index.ts -o ./dist --minify --no-cache --no-source-map-register",
     "prerelease": "shx rm -rf ./dist/src && shx mkdir -p ./dist/src && shx cp -r ./src/templates ./dist/src",
     "release": "npm publish",
-    "publish": "npm run build && npm run prerelease && npm run release"
+    "publish": "npm run build && npm run prerelease && npm run release",
+    "prepare": "husky"
   },
   "keywords": [
     "react",
@@ -36,6 +37,7 @@
     "commander": "^13.1.0",
     "conf": "^13.1.0",
     "fast-glob": "^3.3.3",
+    "husky": "^9.1.7",
     "picocolors": "^1.1.1",
     "prettier": "3.5.3",
     "shx": "^0.4.0",

@@ -1,59 +1,56 @@
-import { execSync } from "child_process"
-
+import { execSync } from "child_process";
 
 const args = process.argv.slice(2);
 
 const npmIstalled = () => {
-  try{
-    execSync('npm --version');
+  try {
+    execSync("npm --version");
     return true;
-  }catch{
+  } catch {
     return false;
   }
-}
+};
 
 const runNpmScripts = (scriptName, errorMsg) => {
-  if(!npmIstalled()){
+  if (!npmIstalled()) {
     console.error("Npm is not installed, please install it before continuing.");
     process.exit(1);
   }
 
-  try{
+  try {
     execSync(`npm run ${scriptName}`, { stdio: "inherit" });
-    process.exit(0);
-  }catch{
+  } catch {
     console.error(`\n${errorMsg || "Error while executing command."}`);
     process.exit(1);
   }
-}
+};
 
 const validateCommitMsg = (commitMsg) => {
   const pattern = /^(feat|fix|test|refactor|chore|style|build):\s*\w+/;
-  if(pattern.test(commitMsg)){
-    process.exit(0);
-  }else{
-    console.log('Incorrect commit message, should be in this format <type>: <message>');
+  if (!pattern.test(commitMsg)) {
+    console.log(
+      "Incorrect commit message, should be in this format <type>: <message>",
+    );
     process.exit(1);
   }
-}
+};
 
-
-if(args.length <= 0){
-  console.log('Provide a valid command name');
+if (args.length <= 0) {
+  console.log("Provide a valid command name");
   process.exit(1);
 }
 
 args.forEach((cmd, index) => {
-  switch(cmd){
+  switch (cmd) {
     case "test":
-      runNpmScripts('test', "Error while executing test.");
+      runNpmScripts("test", "Error while executing test.");
       break;
     case "format":
-      runNpmScripts('prettier', "Error while formatting with prettier.");
+      runNpmScripts("prettier", "Error while formatting with prettier.");
       break;
     case "coMsg":
-        validateCommitMsg(args[index+1]);
-        break;
+      validateCommitMsg(args[index + 1]);
+      break;
   }
 });
 

@@ -1,4 +1,3 @@
-
 export interface UserInputData {
   projectName: string;
   appVersion: string;

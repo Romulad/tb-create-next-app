@@ -6,36 +6,36 @@ import { UserInputData } from "./lib/decalrations";
 import { exitCli } from "./lib/functions";
 import createAppFromTemplate from "./create-from-template";
 
-
 export default async function handleAppCreation({
-    projectName,
-    appVersion,
-    appDescription,
-    gitRepoUrl,
-    skipGit,
-    skipInstall,
-    pckManager
-  } : UserInputData
-) {
+  projectName,
+  appVersion,
+  appDescription,
+  gitRepoUrl,
+  skipGit,
+  skipInstall,
+  pckManager,
+}: UserInputData) {
   const projectPath = await createProjectDir(projectName);
-  if(!projectPath){
+  if (!projectPath) {
     exitCli();
     return;
   }
 
   const templatePath = join(
-    __dirname, TEMPLATES_DIRECTORY_NAME, TEMPLATE_NAMES.appDefault
+    __dirname,
+    TEMPLATES_DIRECTORY_NAME,
+    TEMPLATE_NAMES.appDefault,
   );
-  
+
   createAppFromTemplate({
     appDescription,
     appVersion,
     gitRepoUrl,
     projectName,
     projectPath,
-    skipGit, 
+    skipGit,
     skipInstall,
     templatePath,
-    pckManager
-  })
+    pckManager,
+  });
 }

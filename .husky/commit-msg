@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+commitMsg=$(cat $1)
+
+node script.mjs coMsg "$commitMsg"

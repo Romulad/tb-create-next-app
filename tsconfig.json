@@ -1,14 +1,14 @@
 {
   "compilerOptions": {
-    "target": "es2019",        
+    "target": "es2019",
     "strict": true,
-    "moduleResolution": "bundler",        
+    "moduleResolution": "bundler",
     "esModuleInterop": true,
-    "skipLibCheck": true,   
+    "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "types": ["node", "vitest/globals"],
     "resolveJsonModule": true,
-    "outDir": "dist",
+    "outDir": "dist"
   },
   "include": ["src/"],
   "exclude": ["node_modules", "dist", "src/templates"]

@@ -1,11 +1,10 @@
 import { execSync } from "child_process";
 
-
-export default function isGitInstalled(){
-  try{
+export default function isGitInstalled() {
+  try {
     execSync("git --version", { stdio: "ignore" });
     return true;
-  }catch{
+  } catch {
     return false;
   }
 }
