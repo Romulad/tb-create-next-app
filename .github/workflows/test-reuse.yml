@@ -1,0 +1,10 @@
+on: workflow_call
+
+jobs:
+  test:
+    name: Build and test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ./.github/actions/project_set_up
+      - name: Run tests
+        run: npm run test

@@ -1,0 +1,10 @@
+name: Test build
+run-name: Test build on push to main
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  test:
+    uses: ./.github/workflows/test-reuse.yml

@@ -1,0 +1,33 @@
+name: Test, Deploy and create draft release
+run-name: Test, build and release to npm registry
+on:
+  push:
+    tags:
+      - v*.*.*
+
+jobs:
+  test:
+    uses: ./.github/workflows/test-reuse.yml
+
+  build_release:
+    name: Build and release
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - uses: ./.github/actions/project_set_up
+      - name: Build and release
+        run: npm run publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  create_draft_release:
+    name: Create github draft release
+    runs-on: ubuntu-latest
+    needs: build_release
+    steps:
+      - uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          prerelease: false
+          draft: true
+          title: "Release ${{ github.ref }}"
