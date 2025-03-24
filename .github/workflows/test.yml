@@ -3,7 +3,7 @@ run-name: Test build on push to main
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   test:
