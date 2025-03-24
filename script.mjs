@@ -25,6 +25,23 @@ const runNpmScripts = (scriptName, errorMsg) => {
   }
 };
 
+const needToRunTest = () => {
+  const pattern = /^(src|__tests__)\/.*/;
+  try {
+    const changed = execSync("git diff --cached --name-only");
+    const changedList = changed.toString().split("\n");
+    for (let fielPath of changedList) {
+      if (pattern.test(fielPath)) return true;
+    }
+    return false;
+  } catch {
+    console.error(
+      `\nError while executing git command, checking changed files`,
+    );
+    process.exit(1);
+  }
+};
+
 const validateCommitMsg = (commitMsg) => {
   const pattern = /^(feat|fix|test|refactor|chore|style|build):\s*\w+/;
   if (!pattern.test(commitMsg)) {
@@ -43,7 +60,7 @@ if (args.length <= 0) {
 args.forEach((cmd, index) => {
   switch (cmd) {
     case "test":
-      runNpmScripts("test", "Error while executing test.");
+      needToRunTest() && runNpmScripts("test", "Error while executing test.");
       break;
     case "format":
       runNpmScripts("prettier", "Error while formatting with prettier.");
