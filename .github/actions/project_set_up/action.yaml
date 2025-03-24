@@ -1,5 +1,5 @@
 name: Project setup
-description: Install node, checkout project and install packages
+description: Install node and install packages
 author: "Romuald Oluwatobi <romualdnoualinon@gmail.com>"
 runs:
   using: composite
@@ -8,9 +8,6 @@ runs:
       uses: actions/setup-node@v4
       with:
         registry-url: "https://registry.npmjs.org"
-
-    - name: Checkout repository
-      uses: actions/checkout@v4
 
     - name: Install packages
       run: npm install

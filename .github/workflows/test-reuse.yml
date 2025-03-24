@@ -5,6 +5,7 @@ jobs:
     name: Build and test
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
       - uses: ./.github/actions/project_set_up
       - name: Run tests
         run: npm run test
