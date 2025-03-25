@@ -16,8 +16,7 @@ import handleAppCreation from "./handle-app-creation";
 
 process.on("uncaughtException", (error) => {
   if (error instanceof Error && error.name === "ExitPromptError") {
-    console.log();
-    console.log(`Aborted...! ${cyan("See you next time 👋")}`);
+    console.log(`\nAborted...! ${cyan("See you next time 👋")}`);
   } else {
     throw error;
   }
@@ -155,6 +154,10 @@ async function appCreationFlow() {
         {
           value: "pnpm",
           description: "Fast, disk space efficient package manager",
+        },
+        {
+          value: "bun",
+          description: "Package manager designed to be a dramatically fast",
         },
       ],
       default: userAppConfig.get(userAppConfigKeys.pckManager) || "npm",
