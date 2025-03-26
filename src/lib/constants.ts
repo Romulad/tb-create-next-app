@@ -39,7 +39,7 @@ export const defaultPackageJson = {
     lint: "next lint",
   },
   dependencies: {
-    next: "^15.1.6",
+    next: "^15.0.0",
     react: "^19.0.0",
     "react-dom": "^19.0.0",
   },
