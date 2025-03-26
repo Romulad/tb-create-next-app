@@ -65,20 +65,16 @@ export default function createAppFromTemplate({
   defaultPackageJson.name = projectName;
   defaultPackageJson.description = appDescription;
   defaultPackageJson.version = appVersion;
-
   if (gitRepoUrl) {
     defaultPackageJson.repository.url = gitRepoUrl;
   } else {
     delete (defaultPackageJson as any).repository;
   }
-
   writeFileSync("package.json", JSON.stringify(defaultPackageJson, null, 2));
-
-  console.log();
 
   /* Install packages */
   if (!skipInstall) {
-    console.log(cyan("Installing packages..."));
+    console.log(cyan("\nInstalling packages..."));
 
     /* Check if the package manager is installed */
     if (
@@ -97,12 +93,10 @@ export default function createAppFromTemplate({
     }
   }
 
-  console.log();
-
   /* Initialize git */
   const gitIsInstalled = isGitInstalled();
   if (!skipGit && gitIsInstalled) {
-    console.log(cyan("Initializing git..."));
+    console.log(cyan("\nInitializing git..."));
 
     execCmdWithError(
       `git init; git add .; git commit -m "Initiale commit from Tobi create next app"`,
@@ -119,12 +113,13 @@ export default function createAppFromTemplate({
     }
   } else if (!gitIsInstalled) {
     console.log(
-      red("Tried to initialize git, but it can't be found, please install it."),
+      red(
+        "\nTried to initialize git, but it can't be found, please install it.",
+      ),
     );
   }
 
-  console.log();
   console.log(
-    `Nextjs project named ${cyan(projectName)} created successfully!`,
+    `\nNextjs project named ${cyan(projectName)} created successfully!`,
   );
 }

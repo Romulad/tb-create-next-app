@@ -7,8 +7,10 @@ import {
 } from "./lib/utils";
 
 describe("Project creation", () => {
-  test("Project creation with git and npm", async () => {
+  test("Full project creation after specifying the last input: ", async () => {
+    /* Clear the test directory to start from a clean structure */
     clearTestProjectDir();
+
     const { getStdallStr } = await renderCli(
       [
         "testproject",
@@ -20,7 +22,6 @@ describe("Project creation", () => {
       { cwd: getProjectTestDirPath() },
     );
 
-    await waitFor(5000);
     console.log(getStdallStr());
   });
 });

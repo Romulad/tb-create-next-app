@@ -1,6 +1,6 @@
 import { join } from "path";
-import { TEMPLATE_NAMES, TEMPLATES_DIRECTORY_NAME } from "./lib/constants";
 
+import { TEMPLATE_NAMES, TEMPLATES_DIRECTORY_NAME } from "./lib/constants";
 import createProjectDir from "./lib/create-project-dir";
 import { UserInputData } from "./lib/decalrations";
 import { exitCli } from "./lib/functions";

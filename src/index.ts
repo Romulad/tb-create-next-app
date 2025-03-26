@@ -37,7 +37,7 @@ const program = new Command(packageJson.name)
   .option("--git-repo <git-repo-url>", "Git repository url for the project")
   .option(
     "--pck-manager <package-manager>",
-    "Package manager to use; can be npm, yarn, pnpm or any valid package manager",
+    "Package manager to use; can be npm, yarn, pnpm, bun or any valid package manager",
   )
   .option("--skip-git", "Specify this option to avoid git initialization")
   .option("--skip-install", "Skip package installation")
@@ -53,7 +53,7 @@ async function appCreationFlow() {
   console.log(
     bold(
       cyan(
-        `\nThis utility will walk you through creating a NextJs app using app router.\n`,
+        `\nThis utility will walk you through creating a NextJs app using app router.`,
       ),
     ),
   );
@@ -63,7 +63,7 @@ async function appCreationFlow() {
   if (specifiedPckManager && !isValidPckManager(specifiedPckManager)) {
     console.log(
       yellow(
-        `You’ve selected a different package manager than npm, yarn or pnpm: ${cyan(specifiedPckManager)}\n`,
+        `\nYou’ve selected a different package manager than npm, yarn, pnpm or bun: ${cyan(specifiedPckManager)}`,
       ),
     );
   }
@@ -73,13 +73,15 @@ async function appCreationFlow() {
   if (specifiedGitUrl) {
     const result = await isValidGitRepoUrl(specifiedGitUrl);
     if (result.isDeconnected) {
-      console.log(`${yellow(result.message)}\n`);
+      console.log(`\n${yellow(result.message)}`);
     } else if (!result.valid) {
-      console.error(red(`${result.message}\n`));
+      console.error(red(`\n${result.message}`));
       specifiedGitUrl = "";
     }
   }
   userInputData.gitRepoUrl = specifiedGitUrl;
+
+  console.log();
 
   /* project name */
   if (!projectName) {

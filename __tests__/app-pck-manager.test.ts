@@ -13,6 +13,7 @@ describe("App package manager", () => {
     expect(await findByText("❯ npm")).toBeTruthy();
     expect(await findByText("yarn")).toBeTruthy();
     expect(await findByText("pnpm")).toBeTruthy();
+    expect(await findByText("bun")).toBeTruthy();
     expect(
       await findByText("A widely used package manager for JavaScript"),
     ).toBeTruthy();
@@ -29,7 +30,7 @@ describe("App package manager", () => {
     ]);
     expect(
       await findByText(
-        `You’ve selected a different package manager than npm, yarn or pnpm`,
+        `You’ve selected a different package manager than npm, yarn, pnpm or bun`,
       ),
     ).toBeTruthy();
   });

@@ -41,7 +41,7 @@ describe("Project git repo url", () => {
   });
 
   test("Ask for git repo url: Invalid url", async () => {
-    const { findByText, userEvent } = await renderCli([
+    const { findByText, userEvent, queryByText } = await renderCli([
       "testproject",
       '--app-description "my project"',
       '--app-version "1.0.0"',
@@ -50,6 +50,9 @@ describe("Project git repo url", () => {
     await userEvent.keyboard("novalidurl");
     await userEvent.keyboard("[Enter]");
     expect(await findByText("Invalid repository url")).toBeTruthy();
+    expect(
+      queryByText("Which package do you want to use", { exact: false }),
+    ).toBeNull();
   });
 
   test("Validate git repo from cli: Invalid url", async () => {
