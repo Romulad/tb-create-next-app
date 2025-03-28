@@ -10,6 +10,8 @@ import {
   beforeAll,
 } from "vitest";
 import { execSync } from "child_process";
+import { log } from "console";
+import { red, cyan } from "picocolors";
 
 import {
   clearTestProjectDir,
@@ -18,7 +20,6 @@ import {
   renderCli,
 } from "./lib/utils";
 import { initializeGit } from "../src/lib/initialize-git";
-import { log } from "console";
 
 describe("Git initialization", () => {
   beforeEach(() => {
@@ -87,7 +88,7 @@ describe("Unit test: git initialization", () => {
     expect(logMock).toHaveBeenCalledTimes(2);
     expect(execMock).toHaveBeenCalledTimes(1);
     expect(logMock.mock.calls[1][0]).toEqual(
-      `Tried to initialize git, but it can't be found, please install it.`,
+      red(`Tried to initialize git, but it can't be found, please install it.`),
     );
     expect(execMock.mock.calls[0][0]).toEqual("git --version");
   });
@@ -103,7 +104,9 @@ describe("Unit test: git initialization", () => {
     expect(result).toBe(false);
     expect(logMock).toHaveBeenCalledTimes(2);
     expect(execMock).toHaveBeenCalledTimes(2);
-    expect(logMock.mock.calls[1][0]).toEqual("Error while initializing git");
+    expect(logMock.mock.calls[1][0]).toEqual(
+      red("Error while initializing git"),
+    );
     expect(execMock.mock.calls[1][0]).toEqual(
       `git init && git add . && git commit -m "Initiale commit"`,
     );
@@ -134,7 +137,7 @@ describe("Unit test: git initialization", () => {
     expect(logMock).toHaveBeenCalledTimes(2);
     expect(execMock).toHaveBeenCalledTimes(3);
     expect(logMock.mock.calls[1][0]).toEqual(
-      "Error while adding git remote origin",
+      red("Error while adding git remote origin"),
     );
     expect(execMock.mock.calls[2][0]).toEqual(`git remote add origin url`);
   });
@@ -146,7 +149,9 @@ describe("Unit test: git initialization", () => {
     expect(result).toBe(true);
     expect(logMock).toHaveBeenCalledTimes(2);
     expect(execMock).toHaveBeenCalledTimes(3);
-    expect(logMock.mock.calls[1][0]).toEqual("Add git remote origin with url");
+    expect(logMock.mock.calls[1][0]).toEqual(
+      `Add git remote ${cyan("origin")} with url`,
+    );
     expect(execMock.mock.calls[2][0]).toEqual(`git remote add origin url`);
   });
 });

@@ -10,6 +10,8 @@ import {
   afterAll,
 } from "vitest";
 import { execSync } from "child_process";
+import { log } from "console";
+import { red } from "picocolors";
 
 import {
   clearTestProjectDir,
@@ -19,7 +21,6 @@ import {
 } from "./lib/utils";
 import { installPackages } from "../src/lib/install-packages";
 import { userAppConfig, userAppConfigKeys } from "../src/lib/constants";
-import { log } from "console";
 
 describe("Package installation", () => {
   beforeEach(() => {
@@ -87,7 +88,9 @@ describe("Unit test: package installation", () => {
     expect(result).toBe(false);
     expect(logMock).toHaveBeenCalledTimes(2);
     expect(execMock).toHaveBeenCalledTimes(1);
-    expect(logMock.mock.calls[1][0]).toEqual("noexistpck is not installed");
+    expect(logMock.mock.calls[1][0]).toEqual(
+      red("noexistpck is not installed"),
+    );
     expect(execMock.mock.calls[0][0]).toEqual("noexistpck --version");
   });
 
@@ -102,7 +105,9 @@ describe("Unit test: package installation", () => {
     expect(result).toBe(false);
     expect(logMock).toHaveBeenCalledTimes(2);
     expect(execMock).toHaveBeenCalledTimes(2);
-    expect(logMock.mock.calls[1][0]).toEqual("Error while installing packages");
+    expect(logMock.mock.calls[1][0]).toEqual(
+      red("Error while installing packages"),
+    );
     expect(execMock.mock.calls[1][0]).toEqual("pnpm install");
   });
 
