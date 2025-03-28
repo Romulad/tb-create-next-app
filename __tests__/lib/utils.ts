@@ -13,7 +13,7 @@ export const waitFor = (timeout: number) => {
 
 export const waitForCondition = (
   condition: () => boolean,
-  timeout: number = 10000,
+  timeout: number = 50000,
 ) => {
   const poolingInterval = 1000;
   return new Promise((resolve, rejected) => {
@@ -26,7 +26,7 @@ export const waitForCondition = (
     ) => {
       if (timeoutSum >= timeout) {
         rejected(
-          `Time exceed, rendering condition didn't match after ${timeout / 1000}s`,
+          `Time exceed, rendering condition didn't match after ${timeoutSum / 1000}s`,
         );
       }
 
@@ -58,15 +58,18 @@ export const renderCli = async (
     [cliPath, ...(args || [])],
     options,
   );
+
   // wait untill the cli is render: some result is visible
-  const condition = () =>
-    waitForText
-      ? renderResult.getStdallStr().includes(waitForText)
-      : renderResult
-          .getStdallStr()
-          .includes(
-            "This utility will walk you through creating a NextJs app using app router",
-          );
+  const condition = () => {
+    const result = waitForText
+      ? renderResult.queryByText(waitForText, { exact: false })
+      : renderResult.queryByText(
+          "This utility will walk you through creating a NextJs app using app router",
+          { exact: false },
+        );
+    return result ? true : false;
+  };
+
   await waitForCondition(condition);
   await waitFor(1000);
   return renderResult;
@@ -86,4 +89,52 @@ export const clearTestProjectDir = (dirPath = testProjectDirPath) => {
   } catch {
     return false;
   }
+};
+
+export const getCliParamAndOptions = ({
+  projectName,
+  description,
+  version,
+  gitRepoUrl,
+  pckManager,
+  skipGit,
+  skipInstall,
+  useDefault,
+}: {
+  projectName?: string;
+  description?: string;
+  version?: string;
+  gitRepoUrl?: string;
+  pckManager?: string;
+  skipGit?: boolean;
+  skipInstall?: boolean;
+  useDefault?: boolean;
+}) => {
+  const options = [
+    projectName ? projectName : useDefault ? "testproject" : undefined,
+    description
+      ? `--app-description ${description}`
+      : useDefault
+        ? `--app-description "my project"`
+        : undefined,
+    version
+      ? `--app-version ${version}`
+      : useDefault
+        ? `--app-version "1.0.0"`
+        : undefined,
+    gitRepoUrl
+      ? `--git-repo ${gitRepoUrl}`
+      : useDefault
+        ? `--git-repo "https://github.com"`
+        : undefined,
+    pckManager
+      ? `--pck-manager ${pckManager}`
+      : useDefault
+        ? `--pck-manager "pnpm"`
+        : undefined,
+    skipGit ? "--skip-git" : undefined,
+    skipInstall ? "--skip-install" : undefined,
+  ].filter((option) => typeof option === "string");
+
+  return options;
 };

@@ -33,6 +33,7 @@ export function isValidPckManager(pckManager: string) {
   return (
     pckManager.toLowerCase() === "npm" ||
     pckManager.toLowerCase() === "pnpm" ||
-    pckManager.toLowerCase() === "yarn"
+    pckManager.toLowerCase() === "yarn" ||
+    pckManager.toLowerCase() === "bun"
   );
 }

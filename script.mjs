@@ -60,7 +60,11 @@ if (args.length <= 0) {
 args.forEach((cmd, index) => {
   switch (cmd) {
     case "test":
-      needToRunTest() && runNpmScripts("test", "Error while executing test.");
+      needToRunTest() &&
+        runNpmScripts(
+          "test -- --no-file-parallelism",
+          "Error while executing test.",
+        );
       break;
     case "format":
       runNpmScripts("prettier", "Error while formatting with prettier.");

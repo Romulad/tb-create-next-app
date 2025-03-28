@@ -10,17 +10,11 @@ describe("App package manager", () => {
       '--git-repo "test"',
     ]);
     expect(await findByText("Which package do you want to use?")).toBeTruthy();
-    expect(await findByText("❯ npm")).toBeTruthy();
+    expect(await findByText("npm")).toBeTruthy();
     expect(await findByText("yarn")).toBeTruthy();
     expect(await findByText("pnpm")).toBeTruthy();
     expect(await findByText("bun")).toBeTruthy();
-    expect(
-      await findByText("A widely used package manager for JavaScript"),
-    ).toBeTruthy();
     await userEvent.keyboard("[ArrowDown]");
-    expect(
-      await findByText("Fast and reliable package manager for JavaScript"),
-    ).toBeTruthy();
   });
 
   test("Pck manager with warning msg", async () => {

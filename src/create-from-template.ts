@@ -1,17 +1,12 @@
 import { globSync } from "fast-glob";
 import { basename, dirname, join } from "path";
 import { copyFileSync, mkdirSync, writeFileSync } from "fs";
-import { red, cyan } from "picocolors";
+import { cyan } from "picocolors";
 
 import { UserInputData } from "./lib/decalrations";
-import {
-  defaultPackageJson,
-  userAppConfig,
-  userAppConfigKeys,
-} from "./lib/constants";
-import isGitInstalled from "./lib/git-is-installed";
-import { execCmdWithError } from "./lib/functions";
-
+import { defaultPackageJson } from "./lib/constants";
+import { installPackages } from "./lib/install-packages";
+import { initializeGit } from "./lib/initialize-git";
 interface CreateAppFromTemplate extends UserInputData {
   templatePath: string;
   projectPath: string;
@@ -74,49 +69,12 @@ export default function createAppFromTemplate({
 
   /* Install packages */
   if (!skipInstall) {
-    console.log(cyan("\nInstalling packages..."));
-
-    /* Check if the package manager is installed */
-    if (
-      execCmdWithError(
-        `${pckManager} --version`,
-        `${pckManager} is not installed`,
-        "ignore",
-      )
-    ) {
-      const installed = execCmdWithError(
-        `${pckManager} install`,
-        `Error while installing packages`,
-        "inherit",
-      );
-      installed && userAppConfig.set(userAppConfigKeys.pckManager, pckManager);
-    }
+    installPackages(pckManager);
   }
 
   /* Initialize git */
-  const gitIsInstalled = isGitInstalled();
-  if (!skipGit && gitIsInstalled) {
-    console.log(cyan("\nInitializing git..."));
-
-    execCmdWithError(
-      `git init; git add .; git commit -m "Initiale commit from Tobi create next app"`,
-      `Error while initializing git`,
-      "inherit",
-    );
-
-    if (gitRepoUrl) {
-      execCmdWithError(
-        `git remote add origin ${gitRepoUrl}`,
-        `Error while adding git remote origin`,
-        "ignore",
-      );
-    }
-  } else if (!gitIsInstalled) {
-    console.log(
-      red(
-        "\nTried to initialize git, but it can't be found, please install it.",
-      ),
-    );
+  if (!skipGit) {
+    initializeGit(gitRepoUrl);
   }
 
   console.log(

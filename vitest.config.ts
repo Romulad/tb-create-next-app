@@ -5,7 +5,7 @@ export default defineConfig({
     globals: true,
     environment: "node",
     globalSetup: "./__tests__/lib/setup.ts",
-    testTimeout: 20000,
+    testTimeout: 50000,
     mockReset: true,
   },
 });

@@ -37,15 +37,14 @@ describe("Project creation", () => {
         projectName,
         '--app-description "my project"',
         '--app-version "1.0.0"',
-        '--git-repo "https://github.com"',
+        '--git-repo "https://github.com/Romulad/web-chat-app"',
         '--pck-manager "pnpm"',
         "--skip-git",
         "--skip-install",
       ],
       { cwd: projectParentPah },
+      `Nextjs project named ${projectName} created successfully`,
     );
-
-    await waitFor(1000);
 
     const filePaths = await glob("**", {
       cwd: projectPath,
@@ -69,7 +68,7 @@ describe("Project creation", () => {
     expect(packageJsonContent.version).toBe("1.0.0");
     expect(packageJsonContent.repository).toEqual({
       type: "git",
-      url: "https://github.com",
+      url: "https://github.com/Romulad/web-chat-app",
     });
     expect(packageJsonContent.dependencies).toEqual({
       next: "^15.0.0",

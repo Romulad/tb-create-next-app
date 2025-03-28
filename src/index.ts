@@ -81,8 +81,6 @@ async function appCreationFlow() {
   }
   userInputData.gitRepoUrl = specifiedGitUrl;
 
-  console.log();
-
   /* project name */
   if (!projectName) {
     projectName = await input({
@@ -139,8 +137,7 @@ async function appCreationFlow() {
   }
 
   /* Package manager */
-  let pckManager: string =
-    specifiedPckManager || userAppConfig.get(userAppConfigKeys.pckManager);
+  let pckManager: string = specifiedPckManager;
   if (!pckManager) {
     pckManager = await select({
       message: `Which package do you want to use? ${cyan("select a choice")}:`,
