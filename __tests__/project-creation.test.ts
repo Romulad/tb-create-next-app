@@ -63,9 +63,9 @@ describe("Project creation", () => {
     const packageJsonContent: typeof defaultPackageJson = JSON.parse(
       readFileSync(join(projectPath, "package.json")).toString(),
     );
-    expect(packageJsonContent.name).toBe(projectName);
-    expect(packageJsonContent.description).toBe("my project");
-    expect(packageJsonContent.version).toBe("1.0.0");
+    expect(packageJsonContent.name).toEqual(projectName);
+    expect(packageJsonContent.description).toEqual("my project");
+    expect(packageJsonContent.version).toEqual("1.0.0");
     expect(packageJsonContent.repository).toEqual({
       type: "git",
       url: "https://github.com/Romulad/web-chat-app",

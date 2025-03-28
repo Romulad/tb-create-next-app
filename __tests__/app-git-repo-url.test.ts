@@ -1,4 +1,4 @@
-import { describe, test, expect, vi } from "vitest";
+import { describe, test, expect, vi, Mock } from "vitest";
 
 import { renderCli, waitFor } from "./lib/utils";
 import { isOnline } from "../src/lib/functions";
@@ -74,7 +74,7 @@ describe("Unit test: Project git repo url", () => {
     });
     const isValid = await isValidGitRepoUrl("https://github.com/");
     expect(isValid.valid).toBeFalsy();
-    expect(isValid.message).toBe("Git command can't be found");
+    expect(isValid.message).toEqual("Git command can't be found");
   });
 
   test("Ask for git repo url: Valid Url but not connected", async () => {
@@ -82,7 +82,7 @@ describe("Unit test: Project git repo url", () => {
     isOnline.mockResolvedValue(false);
     const isValid = await isValidGitRepoUrl("https://github.com/");
     expect(isValid.isDeconnected).toBeTruthy();
-    expect(isValid.message).toBe(
+    expect(isValid.message).toEqual(
       "You need to be connected to be able to add a git repository url",
     );
   });
@@ -90,15 +90,14 @@ describe("Unit test: Project git repo url", () => {
   test("Ask for git repo url: Repository not found", async () => {
     //@ts-ignore;
     isOnline.mockResolvedValue(true);
-    //@ts-ignore;
-    execSync
+    (execSync as Mock)
       .mockImplementationOnce(() => true)
       .mockImplementationOnce(() => {
         throw "Error";
       });
     const isValid = await isValidGitRepoUrl("https://github.com/Romulad");
     expect(isValid.valid).toBeFalsy();
-    expect(isValid.message).toBe(
+    expect(isValid.message).toEqual(
       `Repository https://github.com/Romulad not found`,
     );
   });

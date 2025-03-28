@@ -87,8 +87,8 @@ describe("Unit test: package installation", () => {
     expect(result).toBe(false);
     expect(logMock).toHaveBeenCalledTimes(2);
     expect(execMock).toHaveBeenCalledTimes(1);
-    expect(logMock.mock.calls[1][0]).toBe("noexistpck is not installed");
-    expect(execMock.mock.calls[0][0]).toBe("noexistpck --version");
+    expect(logMock.mock.calls[1][0]).toEqual("noexistpck is not installed");
+    expect(execMock.mock.calls[0][0]).toEqual("noexistpck --version");
   });
 
   test("Pck manager is installed but installation failed", () => {
@@ -102,8 +102,8 @@ describe("Unit test: package installation", () => {
     expect(result).toBe(false);
     expect(logMock).toHaveBeenCalledTimes(2);
     expect(execMock).toHaveBeenCalledTimes(2);
-    expect(logMock.mock.calls[1][0]).toBe("Error while installing packages");
-    expect(execMock.mock.calls[1][0]).toBe("pnpm install");
+    expect(logMock.mock.calls[1][0]).toEqual("Error while installing packages");
+    expect(execMock.mock.calls[1][0]).toEqual("pnpm install");
   });
 
   test("Successfully installed pacakages", () => {
@@ -113,7 +113,7 @@ describe("Unit test: package installation", () => {
     expect(result).toBe(true);
     expect(logMock).toHaveBeenCalledTimes(1);
     expect(execMock).toHaveBeenCalledTimes(2);
-    expect(execMock.mock.calls[1][0]).toBe("pnpm install");
-    expect(userAppConfig.get(userAppConfigKeys.pckManager)).toBe("pnpm");
+    expect(execMock.mock.calls[1][0]).toEqual("pnpm install");
+    expect(userAppConfig.get(userAppConfigKeys.pckManager)).toEqual("pnpm");
   });
 });

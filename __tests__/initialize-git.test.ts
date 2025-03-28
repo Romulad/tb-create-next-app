@@ -86,10 +86,10 @@ describe("Unit test: git initialization", () => {
     expect(result).toBe(false);
     expect(logMock).toHaveBeenCalledTimes(2);
     expect(execMock).toHaveBeenCalledTimes(1);
-    expect(logMock.mock.calls[1][0]).toBe(
+    expect(logMock.mock.calls[1][0]).toEqual(
       `Tried to initialize git, but it can't be found, please install it.`,
     );
-    expect(execMock.mock.calls[0][0]).toBe("git --version");
+    expect(execMock.mock.calls[0][0]).toEqual("git --version");
   });
 
   test("Git is installed but initialization failed", () => {
@@ -103,8 +103,8 @@ describe("Unit test: git initialization", () => {
     expect(result).toBe(false);
     expect(logMock).toHaveBeenCalledTimes(2);
     expect(execMock).toHaveBeenCalledTimes(2);
-    expect(logMock.mock.calls[1][0]).toBe("Error while initializing git");
-    expect(execMock.mock.calls[1][0]).toBe(
+    expect(logMock.mock.calls[1][0]).toEqual("Error while initializing git");
+    expect(execMock.mock.calls[1][0]).toEqual(
       `git init && git add . && git commit -m "Initiale commit"`,
     );
   });
@@ -116,7 +116,7 @@ describe("Unit test: git initialization", () => {
     expect(result).toBe(true);
     expect(logMock).toHaveBeenCalledTimes(1);
     expect(execMock).toHaveBeenCalledTimes(2);
-    expect(execMock.mock.calls[1][0]).toBe(
+    expect(execMock.mock.calls[1][0]).toEqual(
       `git init && git add . && git commit -m "Initiale commit"`,
     );
   });
@@ -133,10 +133,10 @@ describe("Unit test: git initialization", () => {
     expect(result).toBe(true);
     expect(logMock).toHaveBeenCalledTimes(2);
     expect(execMock).toHaveBeenCalledTimes(3);
-    expect(logMock.mock.calls[1][0]).toBe(
+    expect(logMock.mock.calls[1][0]).toEqual(
       "Error while adding git remote origin",
     );
-    expect(execMock.mock.calls[2][0]).toBe(`git remote add origin url`);
+    expect(execMock.mock.calls[2][0]).toEqual(`git remote add origin url`);
   });
 
   test("Successfully add remote origin", () => {
@@ -146,7 +146,7 @@ describe("Unit test: git initialization", () => {
     expect(result).toBe(true);
     expect(logMock).toHaveBeenCalledTimes(2);
     expect(execMock).toHaveBeenCalledTimes(3);
-    expect(logMock.mock.calls[1][0]).toBe("Add git remote origin with url");
-    expect(execMock.mock.calls[2][0]).toBe(`git remote add origin url`);
+    expect(logMock.mock.calls[1][0]).toEqual("Add git remote origin with url");
+    expect(execMock.mock.calls[2][0]).toEqual(`git remote add origin url`);
   });
 });
