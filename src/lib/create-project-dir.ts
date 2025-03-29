@@ -5,6 +5,26 @@ import { existsSync, mkdirSync, rmSync } from "fs";
 import { red, yellow, cyan } from "picocolors";
 import { select } from "@inquirer/prompts";
 
+export const handleDirAction = (choice: string, projectPath: string) => {
+  if (choice === "cancel") {
+    console.log(cyan("\nProject creation canceled successfully."));
+    return false;
+  } else if (choice === "delete") {
+    console.log(yellow("\nDeleting..."));
+    try {
+      rmSync(projectPath, { recursive: true, force: true });
+      mkdirSync(projectPath, { recursive: true });
+      console.log(cyan("Deleted!"));
+      return projectPath;
+    } catch {
+      console.log(red("Error while deleting!"));
+      return false;
+    }
+  } else if (choice === "continue") {
+    return projectPath;
+  }
+};
+
 export default async function createProjectDir(projectName: string) {
   const projectPath = resolve(projectName);
   const projectDirPath = dirname(projectPath);
@@ -57,37 +77,23 @@ export default async function createProjectDir(projectName: string) {
     choices: [
       {
         name: "Continue",
-        value: "c",
+        value: "continue",
         description: "Continue the project creation like that",
       },
       {
         name: "Delete everything",
-        value: "d",
+        value: "delete",
         description: "Delete everything inside the directory",
       },
       {
         name: "Cancel everything",
-        value: "ca",
+        value: "cancel",
         description: "Stop the project creation process and exit cli",
       },
     ],
   });
 
-  if (choice === "ca") {
-    console.log(cyan("\nProject creation canceled successfully."));
-    exitCli();
-  } else if (choice === "d") {
-    console.log(yellow("\nDeleting..."));
-    try {
-      rmSync(projectPath, { recursive: true, force: true });
-      mkdirSync(projectPath, { recursive: true });
-      console.log(cyan("Deleted!"));
-      return projectPath;
-    } catch {
-      console.log(red("Error while deleting!"));
-      exitCli();
-    }
-  } else if (choice === "c") {
-    return projectPath;
-  }
+  const result = handleDirAction(choice, projectPath);
+  !result && exitCli();
+  return result;
 }

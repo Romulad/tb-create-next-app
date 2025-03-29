@@ -60,15 +60,14 @@ export const renderCli = async (
   );
 
   // wait untill the cli is render: some result is visible
-  const condition = () => {
-    const result = waitForText
-      ? renderResult.queryByText(waitForText, { exact: false })
-      : renderResult.queryByText(
-          "This utility will walk you through creating a NextJs app using app router",
-          { exact: false },
-        );
-    return result ? true : false;
-  };
+  const condition = () =>
+    waitForText
+      ? renderResult.getStdallStr().includes(waitForText)
+      : renderResult
+          .getStdallStr()
+          .includes(
+            "This utility will walk you through creating a NextJs app using app router",
+          );
 
   await waitForCondition(condition);
   await waitFor(1000);
