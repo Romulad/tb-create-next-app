@@ -2,6 +2,16 @@
   "name": "tb-create-next-app",
   "version": "1.1.1-0",
   "description": "Custom cli tool to create a Nextjs app with Ts and App Router",
+  "private": "false",
+  "homepage": "https://github.com/dev-vizier/vizier",
+  "repository": {
+    "type": "git",
+    "directory": "/packages/vizier",
+    "url": "https://github.com/dev-vizier/vizier"
+  },
+  "bugs": {
+    "url": "https://github.com/dev-vizier/vizier/issues"
+  },
   "scripts": {
     "dev": "shx rm -rf ./dist; ncc build ./src/index.ts -w -o ./dist",
     "test:dev": "vitest dev",
