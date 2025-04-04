@@ -22,7 +22,6 @@ describe("Project creation", () => {
       ".env.local",
       ".gitignore",
       "README.md",
-      "eslint.config.mjs",
       "next-env.d.ts",
       "next.config.ts",
       "package.json",

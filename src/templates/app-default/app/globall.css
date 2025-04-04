@@ -1,0 +1,23 @@
+html body {
+  height: 100vh;
+  overflow: hidden;
+  background-color: #0a0a0a;
+  color: white;
+  font-family:
+    "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 42px;
+}
+
+p {
+  margin: 0px;
+}
+
+main > div {
+  text-align: center;
+  flex: flex;
+  justify-content: center;
+}
