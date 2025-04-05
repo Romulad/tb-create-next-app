@@ -7,7 +7,6 @@ import {
   clearTestProjectDir,
   getProjectTestDirPath,
   renderCli,
-  waitFor,
 } from "./lib/utils";
 import { defaultPackageJson } from "../src/lib/constants";
 
