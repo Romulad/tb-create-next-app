@@ -31,16 +31,31 @@ const program = new Command(packageJson.name)
     "-v, --version",
     "Output the current version of tb-create-next-app.",
   )
-  .argument("[projectName]", "The project name")
-  .option("--app-version <version>", "Specify the app version")
-  .option("--app-description <description>", "Description for the project")
-  .option("--git-repo <git-repo-url>", "Git repository url for the project")
+  .argument("[projectName]", "Your project name")
   .option(
-    "--pck-manager <package-manager>",
-    "Package manager to use; can be npm, yarn, pnpm, bun or any valid package manager",
+    "--app-version <version?:string>",
+    `Specify your application version. It will be set in your project's 
+    package.json 'version' field.
+    Default to '0.1.0' when running tb-create-next-app for the first time on your system.`,
+  )
+  .option(
+    "--app-description <description?:string>",
+    `Description for your application, It will be set in your project's 
+    package.json 'description' field.`,
+  )
+  .option(
+    "--git-repo <git-repo-url?:string>",
+    `Git repository URL for the project. If specified, it should be a valid repository URL. 
+    It will be set in your project's package.json repository.url field and used to 
+    initialize Git if allowed.`,
+  )
+  .option(
+    "--pck-manager <package-manager:string>",
+    `Package manager to use; can be npm, yarn, pnpm, bun or any valid
+    package manager.`,
   )
   .option("--skip-git", "Specify this option to avoid git initialization")
-  .option("--skip-install", "Skip package installation")
+  .option("--skip-install", "Specify this option to avoid package installation")
   .action((name) => {
     projectName = name;
   })
