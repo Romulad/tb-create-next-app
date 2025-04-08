@@ -3,14 +3,14 @@
   "version": "1.1.1-0",
   "description": "Custom cli tool to create a Nextjs app with Ts and App Router",
   "private": "false",
-  "homepage": "https://github.com/dev-vizier/vizier",
+  "homepage": "https://github.com/dev-vizier/vizijs",
   "repository": {
     "type": "git",
-    "directory": "/packages/vizier",
-    "url": "https://github.com/dev-vizier/vizier"
+    "directory": "/packages/vizijs",
+    "url": "https://github.com/dev-vizier/vizijs"
   },
   "bugs": {
-    "url": "https://github.com/dev-vizier/vizier/issues"
+    "url": "https://github.com/dev-vizier/vizijs/issues"
   },
   "scripts": {
     "dev": "shx rm -rf ./dist; ncc build ./src/index.ts -w -o ./dist",

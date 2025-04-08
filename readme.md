@@ -1,6 +1,6 @@
 # Next.js Scaffolding Tool
 
-[![New project repo here](https://img.shields.io/badge/GitHub-Repo-blue, "New project repo")](https://github.com/dev-vizier/vizier)
+[![New project repo here](https://img.shields.io/badge/GitHub-Repo-blue, "New project repo")](https://github.com/dev-vizier/vizijs)
 
 `tb-create-next-app` is a lightweight scaffolding tool for Next.js projects (currently in active development).
 
@@ -133,4 +133,4 @@ Current vision:
 
 Think of it as a developer's vizier—handling repetitive tasks so you can focus on building.
 
-[Explore the new project repository](https://github.com/dev-vizier/vizier)
+[Explore the new project repository](https://github.com/dev-vizier/vizijs)
