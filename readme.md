@@ -58,7 +58,7 @@ Options:
         It will be set in your project's package.json repository.url field and
         used to initialize Git if allowed.
 
-  --pck-manager <package-manager>
+  --pck-manager <package-manager:string>
 
         Package manager to use; can be npm, yarn, pnpm, bun or any valid
         package manager.
