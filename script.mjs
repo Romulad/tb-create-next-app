@@ -43,7 +43,8 @@ const needToRunTest = () => {
 };
 
 const validateCommitMsg = (commitMsg) => {
-  const pattern = /^(feat|fix|test|refactor|chore|style|build|doc):\s*\w+/;
+  const pattern =
+    /^(feat|fix|test|refactor|chore|style|build|doc):\s*\w+|^\d\.\d\.\d.*/;
   if (!pattern.test(commitMsg)) {
     console.log(
       "Incorrect commit message, should be in this format <type>: <message>",
