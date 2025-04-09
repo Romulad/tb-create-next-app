@@ -13,15 +13,17 @@
     "url": "https://github.com/dev-vizier/vizijs/issues"
   },
   "scripts": {
-    "dev": "shx rm -rf ./dist; ncc build ./src/index.ts -w -o ./dist",
+    "predev": "shx rm -rf ./dist && shx mkdir ./dist && shx cp -r ./src/templates ./dist",
+    "dev": "ncc build ./src/index.ts -w -o ./dist",
     "test:dev": "vitest dev",
     "test": "vitest run",
     "prettier": "prettier . --write",
-    "preview": "shx rm -rf ./dist; ncc build ./src/index.ts -o ./dist && node ./dist/index.js",
+    "prepreview": "shx rm -rf ./dist && shx mkdir ./dist && shx cp -r ./src/templates ./dist",
+    "preview": "ncc build ./src/index.ts -o ./dist && node ./dist/index.js",
     "build": "shx rm -rf ./dist; ncc build ./src/index.ts -o ./dist --minify --no-cache --no-source-map-register",
-    "prerelease": "shx rm -rf ./dist/src && shx mkdir -p ./dist/src && shx cp -r ./src/templates ./dist/src",
+    "postbuild": "shx rm -rf ./dist/src && shx cp -r ./src/templates ./dist",
     "release": "npm publish",
-    "publish": "npm run build && npm run prerelease && npm run release",
+    "publish": "npm run build && npm run release",
     "prepare": "husky"
   },
   "keywords": [

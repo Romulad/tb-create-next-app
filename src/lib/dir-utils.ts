@@ -28,3 +28,7 @@ export const isDirEmpty = (dirPath: PathLike): isDirEmptyRType => {
 
   return { isEmpty: false, path: filePaths };
 };
+
+export const getDirName = () => {
+  return __dirname;
+};
