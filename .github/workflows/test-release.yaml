@@ -1,6 +1,7 @@
 name: Test, Deploy and create draft release
 run-name: Test, build and release to npm registry
 on:
+  workflow_dispatch:
   push:
     tags:
       - v*.*.*
