@@ -6,11 +6,10 @@
   "homepage": "https://github.com/dev-vizier/vizijs",
   "repository": {
     "type": "git",
-    "directory": "/packages/vizijs",
-    "url": "https://github.com/dev-vizier/vizijs"
+    "url": "https://github.com/Romulad/tb-create-next-app"
   },
   "bugs": {
-    "url": "https://github.com/dev-vizier/vizijs/issues"
+    "url": "https://github.com/Romulad/tb-create-next-app/issues"
   },
   "scripts": {
     "predev": "shx rm -rf ./dist && shx mkdir ./dist && shx cp -r ./src/templates ./dist",
