@@ -44,10 +44,11 @@ const needToRunTest = () => {
 
 const validateCommitMsg = (commitMsg) => {
   const pattern =
-    /^(feat|fix|test|refactor|chore|style|build|doc):\s*\w+|^\d\.\d\.\d.*/;
+    /^(feat|fix|test|refactor|chore|style|build|doc|ci|cd):\s*\w+|^\d\.\d\.\d.*/i;
   if (!pattern.test(commitMsg)) {
     console.log(
-      "Incorrect commit message, should be in this format <type>: <message>",
+      `Incorrect commit message, should be in this format <type>: <message>
+      Where type can be feat|fix|test|refactor|chore|style|build|doc|ci|cd`,
     );
     process.exit(1);
   }
