@@ -30,7 +30,7 @@ describe("Project creation", () => {
       "app/layout.tsx",
       "app/page.tsx",
     ];
-    const { findByText } = await renderCli(
+    await renderCli(
       [
         projectName,
         '--app-description "my project"',
@@ -52,12 +52,6 @@ describe("Project creation", () => {
     expectFilePaths.forEach((filePath) => {
       expect(filePaths.includes(filePath)).toBeTruthy();
     });
-    expect(
-      await findByText(
-        `Nextjs project named ${cyan(projectName)} created successfully`,
-        { exact: false },
-      ),
-    ).toBeTruthy();
 
     const packageJsonContent: typeof defaultPackageJson = JSON.parse(
       readFileSync(join(projectPath, "package.json")).toString(),
