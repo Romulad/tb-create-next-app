@@ -1,3 +1,7 @@
 import { resolve } from "path";
 
-export const testProjectDirPath = resolve("..", "test-tb-create-next-app");
+export const testProjectDirPath = resolve(
+  (() => __dirname)(),
+  "..",
+  "tb-testing-folder",
+);

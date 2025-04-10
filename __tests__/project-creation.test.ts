@@ -2,6 +2,7 @@ import { describe, test, expect } from "vitest";
 import { join } from "path";
 import { glob } from "fast-glob";
 import { readFileSync } from "fs";
+import { cyan } from "picocolors";
 
 import {
   clearTestProjectDir,
@@ -29,7 +30,6 @@ describe("Project creation", () => {
       "app/layout.tsx",
       "app/page.tsx",
     ];
-
     const { findByText } = await renderCli(
       [
         projectName,
@@ -41,7 +41,7 @@ describe("Project creation", () => {
         "--skip-install",
       ],
       { cwd: projectParentPah },
-      `Nextjs project named ${projectName} created successfully`,
+      `Nextjs project named ${cyan(projectName)} created successfully`,
     );
 
     const filePaths = await glob("**", {
@@ -54,7 +54,7 @@ describe("Project creation", () => {
     });
     expect(
       await findByText(
-        `Nextjs project named ${projectName} created successfully`,
+        `Nextjs project named ${cyan(projectName)} created successfully`,
       ),
     ).toBeTruthy();
 
