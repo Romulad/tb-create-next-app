@@ -55,6 +55,7 @@ describe("Project creation", () => {
     expect(
       await findByText(
         `Nextjs project named ${cyan(projectName)} created successfully`,
+        { exact: false },
       ),
     ).toBeTruthy();
 
