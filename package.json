@@ -2,11 +2,10 @@
   "name": "tb-create-next-app",
   "version": "1.2.0",
   "description": "Custom cli tool to create a Nextjs app with Ts and App Router",
-  "private": "false",
   "homepage": "https://github.com/dev-vizier/vizijs",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Romulad/tb-create-next-app"
+    "url": "git+https://github.com/Romulad/tb-create-next-app"
   },
   "bugs": {
     "url": "https://github.com/Romulad/tb-create-next-app/issues"
